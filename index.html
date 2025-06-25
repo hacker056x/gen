@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Percys-Generador</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    /* Loader */
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      flex-direction: column;
+    }
+
+    #loader img {
+      width: 90%;
+      max-width: 480px;
+      height: auto;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #000;
+      color: #00ff00;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.9);
+      border: 2px solid #00ff00;
+      border-radius: 15px;
+      padding: 50px 25px;
+      box-shadow: 0 0 25px #00ff00;
+      max-width: 480px;
+      width: 100%;
+      margin: auto;
+      animation: fadeIn 1.5s ease-in-out;
+      box-sizing: border-box;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      animation: slideDown 1.2s ease-out;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ff00;
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #3399ff;
+      margin: 0;
+      text-shadow:
+        0 0 10px #3399ff,
+        0 0 20px #3399ff,
+        0 0 30px #3399ffaa,
+        0 0 40px #66b3ffcc;
+      font-weight: 700;
+      letter-spacing: 4px;
+      animation: glow 2.5s infinite alternate;
+      white-space: nowrap;
+    }
+
+    label {
+      color: #66ccff;
+      font-size: 15px;
+      display: block;
+      margin-bottom: 6px;
+      margin-top: 15px;
+      user-select: none;
+      text-shadow: 0 0 6px #66ccffaa;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 14px 12px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input {
+      background-color: #111;
+      color: #00ff00;
+      border: 1.5px solid #00ff00;
+    }
+
+    input::placeholder {
+      color: #33ff33aa;
+      font-weight: 400;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 12px #00ff00;
+      border-color: #00ff00;
+    }
+
+    button {
+      background-color: #000;
+      color: #00ff00;
+      font-weight: bold;
+      border: 1.5px solid #00ff00;
+      box-shadow: 0 0 14px #00ff00;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: #001100;
+      box-shadow: 0 0 20px #00ff00;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      max-height: 320px;
+      overflow-y: auto;
+      color: #00ff00;
+      font-size: 14.5px;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    ul.resultado-lista {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    li.resultado-item {
+      background-color: #111;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      box-shadow: 0 0 12px #00ff0055;
+      transition: transform 0.3s, box-shadow 0.3s;
+      user-select: text;
+      font-family: monospace, monospace;
+    }
+
+    li.resultado-item strong {
+      color: #66ccff;
+      text-shadow: 0 0 6px #66ccffaa;
+    }
+
+    li.resultado-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 18px #00ff00;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #00ff00; }
+      to { text-shadow: 0 0 20px #00ff00; }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      .container {
+        padding: 35px 20px;
+        box-shadow: 0 0 18px #00ff00;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      label {
+        font-size: 13px;
+        margin-top: 12px;
+      }
+
+      input, button {
+        font-size: 14px;
+        padding: 12px 10px;
+      }
+
+      #resultado {
+        font-size: 13px;
+        max-height: 280px;
+      }
+
+      .header img {
+        width: 40px;
+        height: 40px;
+      }
+
+      #loader img {
+        width: 95%;
+        max-width: 95vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de carga -->
+  <div id="loader">
+    <img src="https://i.postimg.cc/KYnqNMyP/team-starblack.jpg" alt="Cargando..." />
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="container" style="display:none;" id="mainContent">
+    <div class="header">
+      <img src="https://i.postimg.cc/KYnqNMyP/team-starblack.jpg" alt="Logo Izquierdo" />
+      <h1>Gen Starblack</h1>
+      <img src="https://i.postimg.cc/KYnqNMyP/team-starblack.jpg" alt="Logo Derecho" />
+    </div>
+
+    <label for="entrada">Ingresa El Bin:</label>
+    <input type="text" id="entrada" placeholder="Ejemplo: 109384xxxxxxxxxx" autocomplete="off" />
+
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" id="cantidad" placeholder="Ingrese La Cantidad Aqui" min="1" />
+
+    <label for="fecha">Mes:</label>
+    <input type="number" id="fecha" min="1" max="12" placeholder="Mes (1-12)" />
+
+    <label for="anio">Año:</label>
+    <input type="number" id="anio" placeholder="Ingrese El Año Aqui" />
+
+    <label for="cvv">CVV:</label>
+    <input type="number" id="cvv" min="100" max="999" placeholder="Ingrese El CVV Aqui" />
+
+    <button onclick="generarResultados()">----Generar----</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      }, 3000);
+    });
+
+    function generarResultados() {
+      let texto = document.getElementById('entrada').value;
+      let cantidad = parseInt(document.getElementById('cantidad').value);
+      let mesInput = parseInt(document.getElementById('fecha').value);
+      let anioInput = parseInt(document.getElementById('anio').value);
+      let cvvInput = parseInt(document.getElementById('cvv').value);
+
+      if (isNaN(cantidad) || cantidad < 1) {
+        alert("Por favor ingresa un número válido de resultados.");
+        return;
+      }
+
+      let resultados = '<ul class="resultado-lista">';
+      for (let i = 0; i < cantidad; i++) {
+        let resultadoTarjeta = generarNumeroValidoLuhn(texto);
+        let fechaGenerada = generarFechaFutura(anioInput, mesInput);
+        let cvvGenerado = cvvInput ? cvvInput : generarCVV();
+        let mesFormateado = String(fechaGenerada.getMonth() + 1).padStart(2, '0');
+        let anioFormateado = fechaGenerada.getFullYear();
+        resultados += `<li class="resultado-item"><strong>cc generada ${i + 1}:</strong><br>${resultadoTarjeta}|${mesFormateado}|${anioFormateado}|${cvvGenerado}</li>`;
+      }
+      resultados += '</ul>';
+      document.getElementById('resultado').innerHTML = resultados;
+    }
+
+    function generarFechaFutura(anioFuturo, mesFuturo) {
+      let ahora = new Date();
+      let mesAleatorio = mesFuturo || Math.floor(Math.random() * 12) + 1;
+      let anioAleatorio = anioFuturo || (2025 + Math.floor(Math.random() * 6));
+      return new Date(anioAleatorio, mesAleatorio - 1, 1);
+    }
+
+    function generarCVV() {
+      return Math.floor(Math.random() * 900) + 100;
+    }
+
+    function generarNumeroValidoLuhn(texto) {
+      let numero = texto.replace(/x/g, () => Math.floor(Math.random() * 10).toString());
+      if (numero.length !== 16) {
+        let missingDigits = 16 - numero.length;
+        for (let i = 0; i < missingDigits; i++) {
+          numero += Math.floor(Math.random() * 10).toString();
+        }
+      }
+
+      let suma = 0;
+      let doble = false;
+      for (let i = numero.length - 1; i >= 0; i--) {
+        let digito = parseInt(numero.charAt(i));
+        if (doble) {
+          digito *= 2;
+          if (digito > 9) digito -= 9;
+        }
+        suma += digito;
+        doble = !doble;
+      }
+
+      let digitoControl = (10 - (suma % 10)) % 10;
+      numero = numero.slice(0, -1) + digitoControl;
+
+      if (!verificarLuhn(numero)) {
+        return generarNumeroValidoLuhn(texto);
+      }
+
+      return numero;
+    }
+
+    function verificarLuhn(numero) {
+      let suma = 0;
+      let doble = false;
+      for (let i = numero.length - 1; i >= 0; i--) {
+        let digito = parseInt(numero.charAt(i));
+        if (doble) {
+          digito *= 2;
+          if (digito > 9) digito -= 9;
+        }
+        suma += digito;
+        doble = !doble;
+      }
+      return suma % 10 === 0;
+    }
+  </script>
+</body>
+</html>
